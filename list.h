@@ -16,15 +16,20 @@ struct Node {
 class FlowList {
 	public:
 	FlowList();
-	FlowList(const FlowList& source);
+	/*FlowList(const FlowList& source);
 	FlowList& operator= (const FlowList& rhs);
-	
+	*/
 	void insert(int year, double flow);
+	double average()const;
+	double median()const;
+	void display()const;
 	
 	private:
 	Node* headM;
+	int n_years;
+	/*
 	void destroy();
-	void copy(const FlowList& source);
+	void copy(const FlowList& source);*/
 };
 
 #endif
