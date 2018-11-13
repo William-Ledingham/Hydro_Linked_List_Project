@@ -25,10 +25,12 @@ class FlowList {
 	double median()const;
 	void display()const;
 	void saveToText(const char* filename)const;
+	void resetNodePtrM();
+	void getHeadM();
 	
 	private:
 	Node* headM;
-	Node* nodePtr;
+	Node* nodePtrM;
 	int n_years;
 	/*
 	void destroy();

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-#define FILENAME "flow.txt"
+#define FILENAME "flow2.txt"
 
 //test
 
@@ -25,7 +25,7 @@ int main(void)
 		
 		switch(menu()){
 			case 1:
-				masterList.display();
+				display(masterList);
 			break;
 			case 2:
 				addData(masterList);
@@ -58,6 +58,57 @@ void displayHeader()
 {
 	cout <<"Program: Flow Studies - Fall 2018 \nVersion 1.0 \nLab Section B01 \nProduced By: William Ledingham\n";
 }
+
+void display(const FlowList& masterList)
+{
+	Node* nodePtr = masterList.getHeadM();
+	
+	cout << "\nYear     Flow (in billions of cubic meters)\n";
+	cout << "----     ----------------------------------\n";
+	
+	while(nodePtr != 0)
+	{
+		//cout << "\nwhat\n";
+		cout << nodePtr->item.year << "     " << nodePtr->item.flow << "\n";
+		nodePtr = nodePtr->next;
+	}
+	cout << "\nThe annual average of the flow is: " << average() << " (million cubic meters)\n";
+	cout << "The median flow is: " << median() << " (million cubic meters)";
+}
+double average(const FlowList& masterList)
+{
+	Node* nodePtr = masterList.getHeadM();
+	double sum = 0;
+	while(nodePtr != 0)
+	{
+		sum += nodePtr->item.flow;
+		nodePtr = nodePtr->next;
+	}
+	return sum/((double)n_years);
+	
+}
+
+double median(const FlowList& masterList)
+{
+	Node* nodePtr = masterList.getHeadM();
+	int evenOrOdd = n_years%2;
+	int index = n_years/2;
+	
+	for(int i = 1; i <= index; i++)
+	{
+		nodePtr = nodePtr->next;
+	}
+		
+	if(evenOrOdd == 0)
+	{
+		return (nodePtr->item.flow + nodePtr->next->item.flow) /2;
+	}
+	else
+	{
+		return nodePtr->item.flow;
+	}
+}
+
 int readData(FlowList& list)
 {
 	int year;

@@ -18,6 +18,16 @@ FlowList& operator= (const FlowList& rhs)
 	
 }
 */
+void FlowList::resetNodePtrM()
+{
+	nodePtrM = headM;
+}
+Node* FlowList::getHeadM()
+{
+	return headM;
+}
+
+
 int FlowList::insert(int year, double flow)
 {	
 	n_years++;
@@ -32,14 +42,14 @@ int FlowList::insert(int year, double flow)
 	}
 	else
 	{
-		Node* nodePtr = headM;
-		while(nodePtr != 0)
+		resetNodePtrM();
+		while(nodePtrM != 0)
 		{
-			if(nodePtr->item.year == year)
+			if(nodePtrM->item.year == year)
 			{
 				return 0;
 			}
-			nodePtr = nodePtr->next;
+			nodePtrM = nodePtrM->next;
 		}
 		
 		Node* before = headM;
@@ -73,7 +83,7 @@ int FlowList::remove(int year)
 	}
 	return 0;
 }
-
+/*
 double FlowList::average()const
 {
 	Node* nodePtr = headM;
@@ -123,7 +133,7 @@ void FlowList::display()const
 	}
 	cout << "\nThe annual average of the flow is: " << average() << " (million cubic meters)\n";
 	cout << "The median flow is: " << median() << " (million cubic meters)";
-}
+}*/
 
 void FlowList::saveToText(const char* filename)const
 {
