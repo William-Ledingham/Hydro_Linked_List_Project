@@ -16,25 +16,27 @@ struct Node {
 class FlowList {
 	public:
 	FlowList();
-	/*FlowList(const FlowList& source);
+	~FlowList();
+	FlowList(const FlowList& source);
 	FlowList& operator= (const FlowList& rhs);
-	*/
+	
 	int insert(int year, double flow);
 	int remove(int year);
-	double average()const;
-	double median()const;
-	void display()const;
-	void saveToText(const char* filename)const;
-	void resetNodePtrM();
-	void getHeadM();
+	//double average()const;
+	//double median()const;
+	//void display()const;
+	//void saveToText(const char* filename)const;
+
+	Node* getHeadM();
+	int getnyears()const;
 	
 	private:
 	Node* headM;
-	Node* nodePtrM;
+	//Node* nodePtrM;
 	int n_years;
-	/*
+	
 	void destroy();
-	void copy(const FlowList& source);*/
+	void copy(const FlowList& source);
 };
 
 #endif

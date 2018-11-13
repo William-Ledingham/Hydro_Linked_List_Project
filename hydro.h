@@ -4,9 +4,9 @@
 #define HYDRO_H
 
 void displayHeader();
-void display();
-double average();
-double median();
+void display(FlowList& masterList);
+double average(FlowList& masterList);
+double median(FlowList& masterList);
 int readData(FlowList& list);
 int menu();
 void addData(FlowList& materList);

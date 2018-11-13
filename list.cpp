@@ -8,23 +8,80 @@ FlowList::FlowList()
 {
 	headM = 0;
 	n_years = 0;
-}/*
-FlowList(const FlowList& source)
+}
+FlowList::~FlowList()
 {
+	destroy();
+}
+FlowList::FlowList(const FlowList& source)
+{
+	copy(source);
+}
+
+FlowList& FlowList::operator= (const FlowList& rhs)
+{
+	if(this != &rhs)
+	{
+		destroy();
+		copy(rhs);
+	}
+	return *this;
+}
+
+
+void FlowList::destroy()
+{
+	Node* nodePtr = headM;
+	Node* after = headM;
+	while(nodePtr != 0)
+	{
+		nodePtr = nodePtr->next;
+		delete after;
+		after = nodePtr;
+	}
+	headM = 0;
+}
+void FlowList::copy(const FlowList& source)
+{
+
+	Node* sourceNodePtr = source.headM;
+	
+	if(sourceNodePtr == 0)
+	{
+		headM = 0;
+		return;
+	}
+	
+	headM = new Node;
+	Node* nodePtr = headM;
+	headM->item.year = sourceNodePtr->item.year;
+	headM->item.flow = sourceNodePtr->item.flow;
+	
+	sourceNodePtr = sourceNodePtr->next;
+	
+	while(sourceNodePtr != 0)
+	{
+		nodePtr->next = new Node;
+		nodePtr = nodePtr->next;
+		
+		nodePtr->item.year = sourceNodePtr->item.year;
+		nodePtr->item.flow = sourceNodePtr->item.flow;
+		
+		sourceNodePtr = sourceNodePtr->next;
+	}
+	nodePtr->next = 0;
 	
 }
-FlowList& operator= (const FlowList& rhs)
-{
-	
-}
-*/
-void FlowList::resetNodePtrM()
-{
-	nodePtrM = headM;
-}
+
+
 Node* FlowList::getHeadM()
 {
 	return headM;
+}
+
+int FlowList::getnyears()const
+{
+	return n_years;
 }
 
 
@@ -42,14 +99,14 @@ int FlowList::insert(int year, double flow)
 	}
 	else
 	{
-		resetNodePtrM();
-		while(nodePtrM != 0)
+		Node* nodePtr = headM;
+		while(nodePtr != 0)
 		{
-			if(nodePtrM->item.year == year)
+			if(nodePtr->item.year == year)
 			{
 				return 0;
 			}
-			nodePtrM = nodePtrM->next;
+			nodePtr = nodePtr->next;
 		}
 		
 		Node* before = headM;
@@ -133,7 +190,7 @@ void FlowList::display()const
 	}
 	cout << "\nThe annual average of the flow is: " << average() << " (million cubic meters)\n";
 	cout << "The median flow is: " << median() << " (million cubic meters)";
-}*/
+}
 
 void FlowList::saveToText(const char* filename)const
 {
@@ -152,4 +209,4 @@ void FlowList::saveToText(const char* filename)const
 	}
 	Data.close();
 }
-
+*/

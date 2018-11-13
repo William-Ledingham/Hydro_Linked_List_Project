@@ -6,18 +6,16 @@
 
 using namespace std;
 
-#define FILENAME "flow2.txt"
-
-//test
+#define FILENAME "flow.txt"
 
 int main(void)
 {
 	FlowList masterList;
-	int numRecords;
+
 	int quit = 0;
 	
 	displayHeader();	
-	numRecords = readData(masterList);
+	readData(masterList);
 
 	while(1)
 	{
@@ -59,9 +57,9 @@ void displayHeader()
 	cout <<"Program: Flow Studies - Fall 2018 \nVersion 1.0 \nLab Section B01 \nProduced By: William Ledingham\n";
 }
 
-void display(const FlowList& masterList)
+void display(FlowList& masterList)
 {
-	Node* nodePtr = masterList.getHeadM();
+	const Node* nodePtr = masterList.getHeadM();
 	
 	cout << "\nYear     Flow (in billions of cubic meters)\n";
 	cout << "----     ----------------------------------\n";
@@ -72,12 +70,13 @@ void display(const FlowList& masterList)
 		cout << nodePtr->item.year << "     " << nodePtr->item.flow << "\n";
 		nodePtr = nodePtr->next;
 	}
-	cout << "\nThe annual average of the flow is: " << average() << " (million cubic meters)\n";
-	cout << "The median flow is: " << median() << " (million cubic meters)";
+	cout << "\nThe annual average of the flow is: " << average(masterList) << " (million cubic meters)\n";
+	cout << "The median flow is: " << median(masterList) << " (million cubic meters)";
 }
-double average(const FlowList& masterList)
+double average(FlowList& masterList)
 {
-	Node* nodePtr = masterList.getHeadM();
+	const Node* nodePtr = masterList.getHeadM();
+	int n_years = masterList.getnyears();
 	double sum = 0;
 	while(nodePtr != 0)
 	{
@@ -88,9 +87,10 @@ double average(const FlowList& masterList)
 	
 }
 
-double median(const FlowList& masterList)
+double median(FlowList& masterList)
 {
-	Node* nodePtr = masterList.getHeadM();
+	const Node* nodePtr = masterList.getHeadM();
+	int n_years = masterList.getnyears();
 	int evenOrOdd = n_years%2;
 	int index = n_years/2;
 	
@@ -188,8 +188,23 @@ void removeData(FlowList& masterList)
 
 void saveData(FlowList& masterList)
 {
-	masterList.saveToText(FILENAME);
-	cout << "\nData was saved to file successfully\n";
+	const Node* nodePtr = masterList.getHeadM();
+	
+	ofstream Data;
+	Data.open(FILENAME);
+	if(Data.fail())
+	{
+		cout << "Error Opening File";
+		exit(1);
+	}
+	while(nodePtr != 0)
+	{
+		Data << nodePtr->item.year << "     " << nodePtr->item.flow << "\n";
+		nodePtr = nodePtr->next;
+	}
+	Data.close();
+	cout << "\nData successfully saved to file\n";
+
 }
 
 void pressEnter()
