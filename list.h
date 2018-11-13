@@ -16,9 +16,9 @@ struct Node {
 class FlowList {
 	public:
 	FlowList();
-	/*FlowList(const FlowList& source);
+	FlowList(const FlowList& source);
 	FlowList& operator= (const FlowList& rhs);
-	*/
+	
 	int insert(int year, double flow);
 	int remove(int year);
 	double average()const;
@@ -29,9 +29,9 @@ class FlowList {
 	private:
 	Node* headM;
 	int n_years;
-	/*
+	
 	void destroy();
-	void copy(const FlowList& source);*/
+	void copy(const FlowList& source);
 };
 
 #endif
