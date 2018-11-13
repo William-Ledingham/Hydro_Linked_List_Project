@@ -28,6 +28,7 @@ class FlowList {
 	
 	private:
 	Node* headM;
+	Node* nodePtr;
 	int n_years;
 	/*
 	void destroy();
