@@ -19,10 +19,12 @@ class FlowList {
 	/*FlowList(const FlowList& source);
 	FlowList& operator= (const FlowList& rhs);
 	*/
-	void insert(int year, double flow);
+	int insert(int year, double flow);
+	int remove(int year);
 	double average()const;
 	double median()const;
 	void display()const;
+	void saveToText(const char* filename)const;
 	
 	private:
 	Node* headM;
