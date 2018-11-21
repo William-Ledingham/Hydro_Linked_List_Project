@@ -1,8 +1,7 @@
-#include <iostream>
-#include <fstream>
-using namespace std;
-#include "list.h"
+//list.cpp
+//W. Ledingham
 
+#include "list.h"
 
 FlowList::FlowList()
 {
@@ -87,15 +86,25 @@ int FlowList::getnyears()const
 
 int FlowList::insert(int year, double flow)
 {	
-	n_years++;
 	Node* newNode = new Node;
 	newNode->item.year = year;
 	newNode->item.flow = flow;
 
-	if(headM == 0 || headM->item.flow > flow)
+	if(headM == 0)
 	{
+		n_years++;
 		newNode->next = headM;
 		headM = newNode;
+	}
+	if(headM->item.flow > flow)
+	{		
+		if(headM->item.year == year)
+		{
+			return 0;
+		}
+		newNode->next = headM;
+		headM = newNode;
+
 	}
 	else
 	{
@@ -121,18 +130,28 @@ int FlowList::insert(int year, double flow)
 		newNode->next = after;
 		
 	}
+		n_years++;
 	return 1;
 }
 int FlowList::remove(int year)
 {
+
 	Node* before = headM;
 	Node* after = headM->next;
+	if(headM->item.year == year)
+	{
+		n_years--;
+		delete headM;
+		headM = after;
+		return 1;
+	}
 	while(after != 0)
 	{
 		if(after->item.year == year)
 		{
 			before->next = after->next;
 			delete after;
+			n_years--;
 			return 1;
 		}
 		after = after->next;
@@ -140,73 +159,3 @@ int FlowList::remove(int year)
 	}
 	return 0;
 }
-/*
-double FlowList::average()const
-{
-	Node* nodePtr = headM;
-	double sum = 0;
-	while(nodePtr != 0)
-	{
-		sum += nodePtr->item.flow;
-		nodePtr = nodePtr->next;
-	}
-	return sum/((double)n_years);
-	
-}
-
-double FlowList::median()const
-{
-	Node* nodePtr = headM;
-	int evenOrOdd = n_years%2;
-	int index = n_years/2;
-	
-	for(int i = 1; i <= index; i++)
-	{
-		nodePtr = nodePtr->next;
-	}
-		
-	if(evenOrOdd == 0)
-	{
-		return (nodePtr->item.flow + nodePtr->next->item.flow) /2;
-	}
-	else
-	{
-		return nodePtr->item.flow;
-	}
-}
-
-void FlowList::display()const
-{
-	Node* nodePtr = headM;
-	
-	cout << "\nYear     Flow (in billions of cubic meters)\n";
-	cout << "----     ----------------------------------\n";
-	
-	while(nodePtr != 0)
-	{
-		//cout << "\nwhat\n";
-		cout << nodePtr->item.year << "     " << nodePtr->item.flow << "\n";
-		nodePtr = nodePtr->next;
-	}
-	cout << "\nThe annual average of the flow is: " << average() << " (million cubic meters)\n";
-	cout << "The median flow is: " << median() << " (million cubic meters)";
-}
-
-void FlowList::saveToText(const char* filename)const
-{
-	Node* nodePtr = headM;
-	ofstream Data;
-	Data.open(filename);
-	if(Data.fail())
-	{
-		cout << "Error Opening File";
-		exit(1);
-	}
-	while(nodePtr != 0)
-	{
-		Data << nodePtr->item.year << "     " << nodePtr->item.flow << "\n";
-		nodePtr = nodePtr->next;
-	}
-	Data.close();
-}
-*/

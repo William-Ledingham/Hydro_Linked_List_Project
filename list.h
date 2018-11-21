@@ -1,4 +1,5 @@
-
+//list.h
+//W. Ledingham
 
 #ifndef LIST_H
 #define LIST_H
@@ -22,17 +23,14 @@ class FlowList {
 	
 	int insert(int year, double flow);
 	int remove(int year);
-	//double average()const;
-	//double median()const;
-	//void display()const;
-	//void saveToText(const char* filename)const;
+
 
 	Node* getHeadM();
 	int getnyears()const;
 	
 	private:
 	Node* headM;
-	//Node* nodePtrM;
+
 	int n_years;
 	
 	void destroy();

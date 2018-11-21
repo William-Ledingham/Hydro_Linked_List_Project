@@ -1,3 +1,6 @@
+//hydro.cpp
+//W. Ledingham
+
 #include <iostream>
 #include <fstream>
 
@@ -6,21 +9,22 @@
 
 using namespace std;
 
-#define FILENAME "flow.txt"
+#define FILENAME "flow2.txt"
 
 int main(void)
 {
 	FlowList masterList;
 
 	int quit = 0;
+	int pressEnterFix = 0;
 	
 	displayHeader();	
 	readData(masterList);
 
 	while(1)
 	{
-		pressEnter();
-		
+		pressEnter(pressEnterFix);
+
 		switch(menu()){
 			case 1:
 				display(masterList);
@@ -66,12 +70,11 @@ void display(FlowList& masterList)
 	
 	while(nodePtr != 0)
 	{
-		//cout << "\nwhat\n";
 		cout << nodePtr->item.year << "     " << nodePtr->item.flow << "\n";
 		nodePtr = nodePtr->next;
 	}
 	cout << "\nThe annual average of the flow is: " << average(masterList) << " (million cubic meters)\n";
-	cout << "The median flow is: " << median(masterList) << " (million cubic meters)";
+	cout << "The median flow is: " << median(masterList) << " (million cubic meters)\n";
 }
 double average(FlowList& masterList)
 {
@@ -94,7 +97,7 @@ double median(FlowList& masterList)
 	int evenOrOdd = n_years%2;
 	int index = n_years/2;
 	
-	for(int i = 1; i <= index; i++)
+	for(int i = 1; i < index; i++)
 	{
 		nodePtr = nodePtr->next;
 	}
@@ -105,7 +108,7 @@ double median(FlowList& masterList)
 	}
 	else
 	{
-		return nodePtr->item.flow;
+		return nodePtr->next->item.flow;
 	}
 }
 
@@ -133,12 +136,14 @@ int readData(FlowList& list)
 }
 int menu()
 {
-
 	cout << "Please select one of the following operations\n	1. Display flow list, average, and median \n	2. Add data \n	3. Save data into the file \n	4. Remove data \n	5. Quit \nEnter your choice (1, 2, 3, 4, or 5): ";
 	int choice;
-	//do{
-		cin >> choice;		
-	//}while(choice < 1 || choice > 5);
+	cin >> choice;
+	if(cin.fail())
+	{
+		cin.clear();
+		cout << "Error reading choice.\n";
+	}
 	return choice;
 }
 
@@ -150,12 +155,14 @@ void addData(FlowList& masterList)
 	cin >> year;
 	if(cin.fail())
 	{
+		cin.clear();
 		cout << "Error";
 	}
 	cout << "Please enter the flow: ";
 	cin >> flow;
 	if(cin.fail())
 	{
+		cin.clear();
 		cout << "Error";
 	}
 	if(masterList.insert(year, flow))
@@ -164,7 +171,7 @@ void addData(FlowList& masterList)
 	}
 	else
 	{
-		cout << "\nError: duplicate data.\n";
+		cout << "\nError: duplicate year.\n";
 	}
 }
 
@@ -175,13 +182,15 @@ void removeData(FlowList& masterList)
 	cin >> year;
 	if(cin.fail())
 	{
+		cin.clear();
 		cout << "Error";
 	}
 	if(masterList.remove(year))
 	{
 		cout << "\nRecord was removed successfully\n";
 	}
-	else{
+	else
+	{
 		cout << "\nError: No such data.\n";
 	}
 }
@@ -207,15 +216,18 @@ void saveData(FlowList& masterList)
 
 }
 
-void pressEnter()
+void pressEnter(int& pressEnterFix)
 {
 	cout << "\n<<< Press Enter to Continue >>>\n";
-	char ch = 'x';
-	//cin.clear();
-	//cin.ignore(10);
-	//while(ch != '\n')
-	//{
-			cin.get();
-	//}
+	
+	if(pressEnterFix == 0) //quick patch for faulty first time check
+	{		
+		pressEnterFix++;
+	}
+	else
+	{
+		cin.ignore(1);
+	}
+	cin.get();
 }
 
